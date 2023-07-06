@@ -28,4 +28,11 @@ export const getStaticProps = async (context) => {
   };
 };
 
+export const getStaticPaths = async () => {
+  return {
+    paths: [{ params: { productId: 'p1' } }, { params: { productId: 'p2' } }, { params: { productId: 'p3' } }],
+    fallback: false,
+  };
+};
+
 export default ProductDetailPage;
