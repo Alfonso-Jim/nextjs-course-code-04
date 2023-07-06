@@ -5,6 +5,10 @@ import path from 'path';
 const ProductDetailPage = (props) => {
   const { loadedProduct } = props;
 
+  if (!loadedProduct) {
+    return <p>Loading...</p>;
+  }
+
   return (
     <>
       <h2>{loadedProduct.title}</h2>
@@ -30,8 +34,11 @@ export const getStaticProps = async (context) => {
 
 export const getStaticPaths = async () => {
   return {
-    paths: [{ params: { productId: 'p1' } }, { params: { productId: 'p2' } }, { params: { productId: 'p3' } }],
-    fallback: false,
+    paths: [{ params: { productId: 'p1' } }],
+    // if we use fallback:'blocking' then next will take a bit more to load the page
+    // fallback: 'blocking',
+    // if we use fallback true then we can set a spinner while we wait for the page to load
+    fallback: true,
   };
 };
 
