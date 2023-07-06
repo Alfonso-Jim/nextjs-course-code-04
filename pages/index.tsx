@@ -12,12 +12,23 @@ function HomePage(props) {
   );
 }
 
-export const getStaticProps = async () => {
+export const getStaticProps = async (context) => {
+  console.log('regenerate');
   const filePath = path.join(process.cwd(), 'data', 'dummy-data.json');
   const jsonData = await fs.readFile(filePath);
-  const data = JSON.parse(jsonData);
+  const data = JSON.parse(String(jsonData));
+
+  if (!data) {
+    return { redirect: '/nothing' };
+  }
+
+  if (data.products.lenght === 0) {
+    return { notFound: true };
+  }
+
   return {
     props: { products: data.products },
+    revalidate: 10,
   };
 };
 
