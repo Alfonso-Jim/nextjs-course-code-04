@@ -17,12 +17,17 @@ const ProductDetailPage = (props) => {
   );
 };
 
-export const getStaticProps = async (context) => {
-  const { params } = context;
-  const productId = params.productId;
+const getData = async () => {
   const filePath = path.join(process.cwd(), 'data', 'dummy-data.json');
   const jsonData = await fs.readFile(filePath);
   const data = JSON.parse(String(jsonData));
+  return data;
+};
+
+export const getStaticProps = async (context) => {
+  const { params } = context;
+  const productId = params.productId;
+  const data = await getData();
   const product = data.products.find((product) => product.id === productId);
 
   return {
@@ -33,12 +38,17 @@ export const getStaticProps = async (context) => {
 };
 
 export const getStaticPaths = async () => {
+  const data = await getData();
+  const productIds = data.products.map((product) => product.id);
+  const pathsWithParams = productIds.map((id) => ({ params: { productId: id } }));
   return {
-    paths: [{ params: { productId: 'p1' } }],
+    paths: pathsWithParams,
     // if we use fallback:'blocking' then next will take a bit more to load the page
     // fallback: 'blocking',
     // if we use fallback true then we can set a spinner while we wait for the page to load
-    fallback: true,
+    // fallback: true,
+    // set to false because we load all productId's
+    fallback: false,
   };
 };
 
