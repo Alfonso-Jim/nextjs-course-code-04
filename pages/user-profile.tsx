@@ -1,6 +1,6 @@
 import { GetServerSideProps, NextPage } from 'next';
 import React from 'react';
-import { User } from '../interfaces/interfaces';
+import { User } from '../interfaces/Interfaces';
 
 const userProfile: NextPage<User> = (props) => {
   return <div>{props.username}</div>;

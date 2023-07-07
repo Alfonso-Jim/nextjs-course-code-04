@@ -2,7 +2,7 @@ import fs from 'fs/promises';
 import { NextPage } from 'next';
 import Link from 'next/link';
 import path from 'path';
-import { Products } from '../interfaces/interfaces';
+import { Products } from '../interfaces/Interfaces';
 
 const HomePage: NextPage<Products> = (props) => {
   const { products } = props;
@@ -10,7 +10,7 @@ const HomePage: NextPage<Products> = (props) => {
     <ul>
       {products.map((product) => (
         <li key={product.id}>
-          <Link href={`/${product.id}`}>{product.title}</Link>
+          <Link href={`/products/${product.id}`}>{product.title}</Link>
         </li>
       ))}
     </ul>
