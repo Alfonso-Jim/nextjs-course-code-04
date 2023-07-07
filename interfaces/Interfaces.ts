@@ -13,3 +13,7 @@ export interface Product {
 export interface User {
   username: string;
 }
+
+export interface UserId {
+  id: string;
+}
