@@ -1,31 +1,46 @@
 import { NextPage } from 'next';
 import React, { useEffect, useState } from 'react';
+import useSWR from 'swr';
 
 const LastSalesPage: NextPage<any> = () => {
   const [sales, setSales] = useState<any>();
-  const [Loading, setLoading] = useState(false);
+  //   const [Loading, setLoading] = useState(false);
+  const { data, error } = useSWR('https://nextjs-course-04-831d3-default-rtdb.firebaseio.com/sales.json', (url) => fetch(url).then((res) => res.json()));
+
   useEffect(() => {
-    setLoading(true);
-    fetch('https://nextjs-course-04-831d3-default-rtdb.firebaseio.com/sales.json')
-      .then((res) => res.json())
-      .then((data) => {
-        const transformedSales = [];
+    if (data) {
+      const transformedSales = [];
 
-        for (const key in data) {
-          transformedSales.push({ id: key, username: data[key].username, volume: data[key].volume });
-        }
+      for (const key in data) {
+        transformedSales.push({ id: key, username: data[key].username, volume: data[key].volume });
+      }
+      setSales(transformedSales);
+    }
+  }, [data]);
 
-        setSales(transformedSales);
-        setLoading(false);
-      });
-  }, []);
+  //   useSWR(<request-url>, (url) => fetch(url).then(res => res.json()));
+  //   useEffect(() => {
+  //     setLoading(true);
+  //     fetch('https://nextjs-course-04-831d3-default-rtdb.firebaseio.com/sales.json')
+  //       .then((res) => res.json())
+  //       .then((data) => {
+  //         const transformedSales = [];
 
-  if (Loading) {
-    return <p>Loading...</p>;
+  //         for (const key in data) {
+  //           transformedSales.push({ id: key, username: data[key].username, volume: data[key].volume });
+  //         }
+
+  //         setSales(transformedSales);
+  //         setLoading(false);
+  //       });
+  //   }, []);
+
+  if (error) {
+    return <>Failed!</>;
   }
 
-  if (!sales) {
-    return <>No data!</>;
+  if (!data || !sales) {
+    return <p>Loading...</p>;
   }
 
   return (
