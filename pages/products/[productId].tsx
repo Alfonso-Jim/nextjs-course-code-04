@@ -2,7 +2,7 @@ import React from 'react';
 import fs from 'fs/promises';
 import path from 'path';
 import { GetStaticPaths, GetStaticProps, NextPage } from 'next';
-import { Product, Products } from '../interfaces/interfaces';
+import { Product, Products } from '../../interfaces/Interfaces';
 
 const ProductDetailPage: NextPage<Product> = (props) => {
   const { loadedProduct } = props;
