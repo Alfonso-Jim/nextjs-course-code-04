@@ -1,9 +1,9 @@
-import { NextPage } from 'next';
+import { GetStaticProps, NextPage } from 'next';
 import React, { useEffect, useState } from 'react';
 import useSWR from 'swr';
 
-const LastSalesPage: NextPage<any> = () => {
-  const [sales, setSales] = useState<any>();
+const LastSalesPage: NextPage<any> = (props) => {
+  const [sales, setSales] = useState(props.sales);
   //   const [Loading, setLoading] = useState(false);
   const { data, error } = useSWR('https://nextjs-course-04-831d3-default-rtdb.firebaseio.com/sales.json', (url) => fetch(url).then((res) => res.json()));
 
@@ -39,7 +39,7 @@ const LastSalesPage: NextPage<any> = () => {
     return <>Failed!</>;
   }
 
-  if (!data || !sales) {
+  if (!data && !sales) {
     return <p>Loading...</p>;
   }
 
@@ -52,6 +52,19 @@ const LastSalesPage: NextPage<any> = () => {
       ))}
     </ul>
   );
+};
+
+export const getStaticProps: GetStaticProps = async () => {
+  const response = await fetch('https://nextjs-course-04-831d3-default-rtdb.firebaseio.com/sales.json');
+  const data = await response.json();
+
+  const transformedSales = [];
+
+  for (const key in data) {
+    transformedSales.push({ id: key, username: data[key].username, volume: data[key].volume });
+  }
+
+  return { props: { sales: transformedSales } };
 };
 
 export default LastSalesPage;
