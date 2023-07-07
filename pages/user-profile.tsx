@@ -9,6 +9,8 @@ const userProfile: NextPage<User> = (props) => {
 export default userProfile;
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
+  const { params, req, res } = context;
+
   return {
     props: {
       username: 'Poncho',
