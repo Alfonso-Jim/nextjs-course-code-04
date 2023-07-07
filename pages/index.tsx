@@ -1,8 +1,10 @@
 import fs from 'fs/promises';
+import { NextPage } from 'next';
 import Link from 'next/link';
 import path from 'path';
+import { Products } from '../interfaces/interfaces';
 
-function HomePage(props) {
+const HomePage: NextPage<Products> = (props) => {
   const { products } = props;
   return (
     <ul>
@@ -13,19 +15,19 @@ function HomePage(props) {
       ))}
     </ul>
   );
-}
+};
 
 export const getStaticProps = async (context) => {
   console.log('regenerate');
   const filePath = path.join(process.cwd(), 'data', 'dummy-data.json');
-  const jsonData = await fs.readFile(filePath);
-  const data = JSON.parse(String(jsonData));
+  const jsonData = await fs.readFile(filePath, 'utf8');
+  const data = JSON.parse(String(jsonData)) as Products;
 
   if (!data) {
     return { redirect: '/nothing' };
   }
 
-  if (data.products.lenght === 0) {
+  if (data.products.length === 0) {
     return { notFound: true };
   }
 
