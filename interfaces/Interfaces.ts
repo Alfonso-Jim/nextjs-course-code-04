@@ -9,3 +9,7 @@ export interface Product {
     description: string;
   };
 }
+
+export interface User {
+  username: string;
+}
