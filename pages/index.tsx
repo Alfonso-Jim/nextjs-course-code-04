@@ -24,7 +24,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
   const data = JSON.parse(String(jsonData)) as Products;
 
   if (!data) {
-    return { redirect: '/nothing' };
+    return { props: { products: [] }, redirect: '/nothing' };
   }
 
   if (data.products.length === 0) {
