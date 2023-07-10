@@ -1,5 +1,5 @@
 import fs from 'fs/promises';
-import { NextPage } from 'next';
+import { GetStaticProps, NextPage } from 'next';
 import Link from 'next/link';
 import path from 'path';
 import { Products } from '../interfaces/Interfaces';
@@ -17,7 +17,7 @@ const HomePage: NextPage<Products> = (props) => {
   );
 };
 
-export const getStaticProps = async (context) => {
+export const getStaticProps: GetStaticProps = async (context) => {
   console.log('regenerate');
   const filePath = path.join(process.cwd(), 'data', 'dummy-data.json');
   const jsonData = await fs.readFile(filePath, 'utf8');
